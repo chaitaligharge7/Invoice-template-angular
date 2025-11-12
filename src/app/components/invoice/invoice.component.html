@@ -1,6 +1,14 @@
 <div class="page">
   <div class="toolbar">
-    <button class="btn" (click)="downloadPDF()">Download PDF</button>
+    <button class="btn" (click)="downloadPDF()"  [disabled]="isDownloading">
+      {{
+        isDownloading
+          ? '⏳ Downloading...'
+          : isDownloaded
+          ? '✅ Downloaded'
+          : '📄 Download PDF'
+      }}
+    </button>
   </div>
 
   <div class="invoice" #invoiceContent>

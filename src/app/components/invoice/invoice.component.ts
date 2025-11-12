@@ -5,8 +5,7 @@ import {
   viewChild,
   ViewChild,
 } from '@angular/core';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import html2pdf from 'html2pdf.js';
 
 @Component({
   selector: 'app-invoice',
@@ -16,6 +15,9 @@ import html2canvas from 'html2canvas';
 export class InvoiceComponent implements OnInit {
   ngOnInit(): void {}
   @ViewChild('invoiceContent') invoiceContent!: ElementRef;
+
+  isDownloading = false;
+  isDownloaded = false;
 
   invoice = {
     invoiceNo: 'INV-2025-001',
@@ -57,15 +59,25 @@ export class InvoiceComponent implements OnInit {
     return this.SubTotal + this.tax;
   }
   downloadPDF() {
-    const element = this.invoiceContent.nativeElement;
-    html2canvas(element, { scale: 2 }).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const imgWidth = 210; // full width
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    this.isDownloading = true;
+    this.isDownloaded = false;
 
-      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-      pdf.save(`${this.invoice.invoiceNo}.pdf`);
-    });
+    const element = this.invoiceContent.nativeElement;
+    html2pdf()
+      .from(element)
+      .save('Invoice.pdf')
+      .then(() => {
+        // ✅ mark as downloaded
+        this.isDownloading = false;
+        this.isDownloaded = true;
+
+        // optional: reset after few seconds
+        setTimeout(() => {
+          this.isDownloaded = false;
+        }, 3000);
+      })
+      .catch(() => {
+        this.isDownloading = false;
+      });
   }
 }
