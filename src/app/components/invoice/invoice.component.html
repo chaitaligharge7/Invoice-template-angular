@@ -1,0 +1,60 @@
+<div class="page">
+  <div class="toolbar">
+    <button class="btn" (click)="downloadPDF()">Download PDF</button>
+  </div>
+
+  <div class="invoice" #invoiceContent>
+    <header class="header">
+      <div class="company">
+        <h1>{{ invoice.company.name }}</h1>
+        <p>{{ invoice.company.address }}</p>
+        <p>{{ invoice.company.phone }}</p>
+        <p>{{ invoice.company.email }}</p>
+      </div>
+
+      <div class="meta">
+        <h2>INVOICE</h2>
+        <p><strong>No:</strong> {{ invoice.invoiceNo }}</p>
+        <p><strong>Date:</strong> {{ invoice.date }}</p>
+        <p><strong>Due Date:</strong> {{ invoice.dueDate }}</p>
+      </div>
+    </header>
+
+    <section class="client-info">
+      <h3>Bill To</h3>
+      <p>
+        <strong>{{ invoice.client.name }}</strong>
+      </p>
+      <p>{{ invoice.client.company }}</p>
+      <p>{{ invoice.client.address }}</p>
+      <p>{{ invoice.client.email }}</p>
+    </section>
+
+    <section class="items">
+      <div class="item-header">
+        <div>Description</div>
+        <div>quantity</div>
+        <div>price</div>
+        <div>Total</div>
+      </div>
+
+      <div class="item-row" *ngFor="let it of invoice.items; let i = index">
+        <div>{{ i + 1 }}</div>
+        <div>{{ it.description }}</div>
+        <div>{{ it.quantity }}</div>
+        <div>₹{{ it.price }}</div>
+        <div>₹{{ it.quantity * it.price }}</div>
+      </div>
+    </section>
+
+    <section class="total">
+      <p><strong>SubTotal:</strong> ₹{{ SubTotal }}</p>
+      <p><strong>Tax (18%):</strong> ₹{{ tax }}</p>
+      <p><strong>Total:</strong> ₹{{ Total }}</p>
+    </section>
+
+    <footer>
+      <p><strong>Notes:</strong> {{ invoice.notes }}</p>
+    </footer>
+  </div>
+</div>
