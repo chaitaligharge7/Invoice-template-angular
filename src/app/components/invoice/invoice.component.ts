@@ -31,7 +31,8 @@ export class InvoiceComponent implements OnInit {
       email: 'billing@acme.com',
     },
 
-    client: {
+    client: 
+    {
       name: 'chaitali gharge',
       company: 'Chaitanya Pvt Ltd',
       address: 'Sunset Road,saniya plaza,Pune,411022',
